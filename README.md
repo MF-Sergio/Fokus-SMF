@@ -5,6 +5,10 @@
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![Manipulação DOM](https://img.shields.io/badge/DOM-Manipulation-purple?style=for-the-badge)
 
+## ⬆️ Deploy do Projeto
+
+```https://fokus-smf.vercel.app/```
+
 ## 📋 Sobre o Projeto
 
 **Fokus** é uma aplicação web interativa baseada na **Técnica Pomodoro**, criada para aumentar a produtividade e concentração em tarefas importantes. O projeto demonstra habilidades avançadas em **manipulação do DOM** com JavaScript puro, criando uma experiência visual e sonora imersiva.
