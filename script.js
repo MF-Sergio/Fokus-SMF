@@ -13,7 +13,7 @@ const startPauseBtn = document.querySelector('#start-pause span');
 const startPauseImg = document.querySelector('#start-pause img');
 
 /* TEMPORIZADOR */
-const duracaoFoco = 25 * 60;
+const duracaoFoco = 10;
 const duracaoDescansoCurto = 5 * 60;
 const duracaoDescansoLongo = 15 * 60;
 let tempoDecorridoEmSegundos = 0;
@@ -29,17 +29,23 @@ function mostrarTempo() {
 }
 
 const contagemRegressiva = () => {
+    tempoDecorridoEmSegundos -= 1;
+    mostrarTempo();
+    startPauseBtn.textContent = 'Pausar';
+
     if (tempoDecorridoEmSegundos <= 0) {
-        //somZera.play();
-        alert('Tempo finalizado!')
-        zerar()
-        clearInterval(intervalo);
-        return
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+
+        if (focoAtivo) {
+            const evento = new CustomEvent('FocoFinalizado');
+            document.dispatchEvent(evento);
+        }
+
+        alert('Tempo finalizado!');
+        zerar();
+        return;
     }
-    tempoDecorridoEmSegundos -= 1
-    mostrarTempo()
-    startPauseBtn.textContent = "Pausar"
-}
+};
 function iniciar() {
     if (!intervalo) intervalo = setInterval(contagemRegressiva, 1000);
 }
