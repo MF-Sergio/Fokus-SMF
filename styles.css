@@ -373,6 +373,12 @@ h6 {
   margin-bottom: 4rem;
 }
 
+.app__form--add-task {
+  background-color: #85898d;
+  border-radius: 0.8rem;
+  padding: 2rem;
+}
+
 .app__form-textarea,
 .app__form-textarea::placeholder {
   font-size: 2rem;
