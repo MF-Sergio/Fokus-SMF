@@ -1,8 +1,5 @@
 /* SELETORES */
 const html = document.querySelector('html');
-const foco = document.querySelector('.app__card-button--foco');
-const curto = document.querySelector('.app__card-button--curto');
-const longo = document.querySelector('.app__card-button--longo');
 const timerDisplay = document.querySelector('#timer');
 const bannerDisplay = document.querySelector('.app__image');
 const titleDisplay = document.querySelector('.app__title');
@@ -11,16 +8,23 @@ const musicaFoco = document.querySelector('#alternar-musica');
 const startPause = document.querySelector('#start-pause');
 const startPauseBtn = document.querySelector('#start-pause span');
 const startPauseImg = document.querySelector('#start-pause img');
+const resetButton = document.querySelector('#reset');
+const botoesContainer = document.querySelector('.app__card-list');
 
 /* TEMPORIZADOR */
 const duracaoFoco = 10;
 const duracaoDescansoCurto = 5 * 60;
 const duracaoDescansoLongo = 15 * 60;
-let tempoDecorridoEmSegundos = 0;
+let tempoDecorridoEmSegundos = duracaoFoco;
 let intervalo = null;
 const somZera = new Audio('sons/beep.mp3');
 const somInicia = new Audio('sons/play.wav');
 const somPausa = new Audio('sons/pause.mp3');
+const duracoesPorContexto = {
+    foco: duracaoFoco,
+    'descanso-curto': duracaoDescansoCurto,
+    'descanso-longo': duracaoDescansoLongo
+};
 
 function mostrarTempo() {
     const tempo = new Date(tempoDecorridoEmSegundos * 1000);
@@ -50,10 +54,16 @@ function iniciar() {
     if (!intervalo) intervalo = setInterval(contagemRegressiva, 1000);
 }
 function zerar() {
-    clearInterval(intervalo)
-    startPauseBtn.textContent = "Começar"
-    startPauseImg.src = "./imagens/play_arrow.png"
-    intervalo = null
+    clearInterval(intervalo);
+    startPauseBtn.textContent = 'Começar';
+    startPauseImg.src = './imagens/play_arrow.png';
+    intervalo = null;
+}
+
+function resetar() {
+    zerar();
+    tempoDecorridoEmSegundos = duracoesPorContexto[html.dataset.contexto];
+    mostrarTempo();
 }
 
 if (startPause) {
@@ -69,6 +79,10 @@ if (startPause) {
     });
 } else {
     console.warn('#start-pause não encontrado');
+}
+
+if (resetButton) {
+    resetButton.addEventListener('click', resetar);
 }
 
 /* MÚSICA DE FUNDO */
@@ -90,50 +104,29 @@ musicaFoco.addEventListener('change', () => {
 function alterarContexto(contexto) {
     html.setAttribute('data-contexto', contexto);
     bannerDisplay.setAttribute('src', `/imagens/${contexto}.png`)
+    botoes.forEach(botao => botao.classList.remove('active'));
+    tempoDecorridoEmSegundos = duracoesPorContexto[contexto];
+    mostrarTempo();
 
-    botoes.forEach(function (botao) {
-        mostrarTempo();
-        botao.classList.remove('active')
-    });
-
-
-    switch (contexto) {
-        case 'foco':
-            timerDisplay.textContent = '25:00';
-            titleDisplay.innerHTML = 'Otimize sua produtividade,<br> <strong class="app__title-strong">mergulhe no que importa.</strong>';
-            break;
-
-
-        case 'descanso-curto':
-            timerDisplay.textContent = '05:00';
-            titleDisplay.innerHTML = 'Que tal dar uma respirada? <strong class="app__title-strong">Faça uma pausa curta!</strong>';
-            break;
-
-        case 'descanso-longo':
-            timerDisplay.textContent = '15:00';
-            titleDisplay.innerHTML = 'Hora de voltar à superfície.<strong class="app__title-strong"> Faça uma pausa longa.</strong>';
-            break;
-
-        default:
-            break;
+    if (contexto === 'foco') {
+        titleDisplay.innerHTML = 'Otimize sua produtividade,<br> <strong class="app__title-strong">mergulhe no que importa.</strong>';
+    } else if (contexto === 'descanso-curto') {
+        titleDisplay.innerHTML = 'Que tal dar uma respirada? <strong class="app__title-strong">Faça uma pausa curta!</strong>';
+    } else if (contexto === 'descanso-longo') {
+        titleDisplay.innerHTML = 'Hora de voltar à superfície.<strong class="app__title-strong"> Faça uma pausa longa.</strong>';
     }
 }
 
 /* EVENTOS DOS BOTÕES */
-foco.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = duracaoFoco;
-    alterarContexto('foco')
-    foco.classList.add('active')
-})
+if (botoesContainer) {
+    botoesContainer.addEventListener('click', evento => {
+        const botao = evento.target.closest('[data-contexto]');
 
-curto.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = duracaoDescansoCurto;
-    alterarContexto('descanso-curto')
-    curto.classList.add('active')
-})
+        if (!botao) return;
 
-longo.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = duracaoDescansoLongo;
-    alterarContexto('descanso-longo')
-    longo.classList.add('active')
-})
+        alterarContexto(botao.dataset.contexto);
+        botao.classList.add('active');
+    });
+}
+
+alterarContexto(html.dataset.contexto || 'foco');

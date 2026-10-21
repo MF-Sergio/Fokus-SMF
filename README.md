@@ -29,7 +29,7 @@ Além de controlar o tempo, a aplicação passa a permitir:
 
 ## 🍅 Técnica Pomodoro (resumo)
 
-- **25 minutos** de foco
+- **10 segundos** de foco (configuração atual para testes)
 - **5 minutos** de descanso curto
 - **15 minutos** de descanso longo
 
@@ -38,7 +38,7 @@ Além de controlar o tempo, a aplicação passa a permitir:
 ### ⏱️ Timer Pomodoro
 - Modos: **Foco**, **Descanso Curto**, **Descanso Longo**
 - Cronômetro regressivo (MM:SS)
-- Botão **Começar/Pausar**
+- Botões **Começar/Pausar** e **Reset**
 - Feedback visual (mudança de contexto na UI)
 - Alert/alarme ao finalizar (dependendo da configuração)
 
@@ -123,7 +123,7 @@ Acesse: `http://localhost:8000`
 ### Ajustar tempos
 Em `script.js`:
 ```js
-const duracaoFoco = 25 * 60;
+const duracaoFoco = 10;
 const duracaoDescansoCurto = 5 * 60;
 const duracaoDescansoLongo = 15 * 60;
 ```
