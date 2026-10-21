@@ -12,7 +12,7 @@ const resetButton = document.querySelector('#reset');
 const botoesContainer = document.querySelector('.app__card-list');
 
 /* TEMPORIZADOR */
-const duracaoFoco = 10;
+const duracaoFoco = 25 * 60;
 const duracaoDescansoCurto = 5 * 60;
 const duracaoDescansoLongo = 15 * 60;
 let tempoDecorridoEmSegundos = duracaoFoco;
@@ -102,6 +102,7 @@ musicaFoco.addEventListener('change', () => {
 
 /* ALTERAR CONTEXTO */
 function alterarContexto(contexto) {
+    zerar();
     html.setAttribute('data-contexto', contexto);
     bannerDisplay.setAttribute('src', `/imagens/${contexto}.png`)
     botoes.forEach(botao => botao.classList.remove('active'));
